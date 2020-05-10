@@ -68,7 +68,7 @@ void viewmap(Layer *layer, unsigned char biomeColour[256][3], int areaX, int are
     uint *colbuf = (uint *) malloc(sizeof(uint) *
             areaWidth*areaHeight*pixscale*pixscale);
 
-    biomesToImage(colbuf, biomeColour, ints, areaWidth, areaHeight, pixscale, 0);
+    biomesToImage(reinterpret_cast<unsigned char*>(colbuf), biomeColour, ints, areaWidth, areaHeight, pixscale, 0);
 
     XImage *ximg = XCreateImage(w.dis, DefaultVisual(w.dis,0), 24, ZPixmap, 0,
             (char*)colbuf, areaWidth*pixscale, areaHeight*pixscale, 24, 0);

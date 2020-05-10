@@ -32,8 +32,6 @@
 //#warning "Using no SIMD extensions."
 #endif
 
-#define STRUCT(S) typedef struct S S; struct S
-
 #define OPT_O2 __attribute__((optimize("O2")))
 
 
@@ -146,7 +144,7 @@ enum BiomeTempCategory
 };
 
 
-STRUCT(Biome)
+struct Biome
 {
     int id;
     int type;
@@ -156,13 +154,13 @@ STRUCT(Biome)
     int mutated;
 };
 
-STRUCT(OceanRnd)
+struct OceanRnd
 {
     int d[512];
     double a, b, c;
 };
 
-STRUCT(Layer)
+struct Layer
 {
     int64_t baseSeed;   // Generator seed (depends only on layer hierarchy)
     int64_t worldSeed;  // based on the seed of the world
@@ -300,7 +298,7 @@ static inline int mcNextInt(Layer *layer, int mod)
 
 
 
-static inline int64_t processWorldSeed(register int64_t ws, const int64_t bs)
+static inline int64_t processWorldSeed(int64_t ws, const int64_t bs)
 {
     ws *= ws * 6364136223846793005LL + 1442695040888963407LL;
     ws += bs;
@@ -312,7 +310,7 @@ static inline int64_t processWorldSeed(register int64_t ws, const int64_t bs)
     return ws;
 }
 
-static inline int64_t getChunkSeed(register int64_t ss, const int64_t x, const int64_t z)
+static inline int64_t getChunkSeed(int64_t ss, const int64_t x, const int64_t z)
 {
     ss += x;
     ss *= ss * 6364136223846793005LL + 1442695040888963407LL;

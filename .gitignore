@@ -2,3 +2,6 @@ find_compactbiomes
 find_quadhuts
 .cproject
 .project
+*.o
+*.a
+tags

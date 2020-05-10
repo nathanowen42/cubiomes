@@ -39,7 +39,7 @@ enum // village house types prior to 1.14
     Blacksmith, HouseLarge, HOUSE_NUM
 };
 
-STRUCT(StructureConfig)
+struct StructureConfig
 {
     int64_t seed;
     int regionSize, chunkRange;
@@ -98,14 +98,12 @@ static const int achievementBiomes_1_7[] =
         coldTaiga, coldTaigaHills, megaTaiga, megaTaigaHills, extremeHillsPlus, savanna, savannaPlateau, mesa, mesaPlateau_F, mesaPlateau // 30-39
 };
 
-
-
-STRUCT(Pos)
+struct Pos
 {
     int x, z;
 };
 
-STRUCT(BiomeFilter)
+struct BiomeFilter
 {
     // bitfield for required temperature categories, including special variants
     uint64_t tempCat;

@@ -150,7 +150,7 @@ void setWorldSeed(Layer *layer, int64_t seed)
 }
 
 
-void mapNull(Layer *l, int * __restrict out, int x, int z, int w, int h)
+void mapNull(Layer *, int * __restrict, int, int, int, int)
 {
 }
 
@@ -167,7 +167,7 @@ void mapSkip(Layer *l, int * __restrict out, int x, int z, int w, int h)
 
 void mapIsland(Layer *l, int * __restrict out, int areaX, int areaZ, int areaWidth, int areaHeight)
 {
-    register int x, z;
+    int x, z;
 
     const int64_t ws = l->worldSeed;
     const int64_t ss = ws * (ws * 6364136223846793005LL + 1442695040888963407LL);
@@ -178,7 +178,7 @@ void mapIsland(Layer *l, int * __restrict out, int areaX, int areaZ, int areaWid
         {
             const int64_t chunkX = (int64_t)(x + areaX);
             const int64_t chunkZ = (int64_t)(z + areaZ);
-            register int64_t cs = ss;
+            int64_t cs = ss;
             cs += chunkX;
             cs *= cs * 6364136223846793005LL + 1442695040888963407LL;
             cs += chunkZ;
@@ -358,7 +358,7 @@ void mapZoom(Layer *l, int * __restrict out, int areaX, int areaZ, int areaWidth
             const int chunkX = (x + pX) << 1;
             const int chunkZ = (z + pZ) << 1;
 
-            register int cs = ss;
+            int cs = ss;
             cs += chunkX;
             cs *= cs * 1284865837 + 4150755663;
             cs += chunkZ;
@@ -448,7 +448,7 @@ void mapAddIsland(Layer *l, int * __restrict out, int areaX, int areaZ, int area
             {
                 const int64_t chunkX = (int64_t)(x + areaX);
                 const int64_t chunkZ = (int64_t)(z + areaZ);
-                register int64_t cs = ss;
+                int64_t cs = ss;
                 cs += chunkX;
                 cs *= cs * 6364136223846793005LL + 1442695040888963407LL;
                 cs += chunkZ;
@@ -511,7 +511,7 @@ void mapAddIsland(Layer *l, int * __restrict out, int areaX, int areaZ, int area
                 const int64_t chunkX = (int64_t)(x + areaX);
                 const int64_t chunkZ = (int64_t)(z + areaZ);
 
-                register int64_t cs = ss;
+                int64_t cs = ss;
                 cs += chunkX;
                 cs *= cs * 6364136223846793005LL + 1442695040888963407LL;
                 cs += chunkZ;

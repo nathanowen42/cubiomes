@@ -6,7 +6,7 @@
 #include <math.h>
 
 
-STRUCT(quad_threadinfo_t)
+struct quad_threadinfo_t
 {
     int64_t start, end;
     StructureConfig sconf;
@@ -496,7 +496,7 @@ int isTriBase(const StructureConfig sconf, const int64_t seed, const int64_t qua
  *
  * Returned is the number of spawning spaces within reach.
  */
-int countBlocksInSpawnRange(Pos p[4], const int ax, const int ay, const int az)
+int countBlocksInSpawnRange(Pos p[4], const int ax, [[maybe_unused]] const int ay, const int az)
 {
     int minX = 3e7, minZ = 3e7, maxX = -3e7, maxZ = -3e7;
     int best, i, x, z, px, pz;
@@ -1213,7 +1213,7 @@ int findStrongholds(const int mcversion, LayerStack *g, int *cache,
 }
 
 
-static double getGrassProbability(int64_t seed, int biome, int x, int z)
+static double getGrassProbability([[maybe_unused]] int64_t seed, int biome, [[maybe_unused]] int x, [[maybe_unused]] int z)
 {
     // TODO: Use ChunkGeneratorOverworld.generateHeightmap for better estimate.
     // TODO: Try to determine the actual probabilities and build a statistic.
@@ -1269,7 +1269,7 @@ static double getGrassProbability(int64_t seed, int biome, int x, int z)
     }
 }
 
-static int canCoordinateBeSpawn(const int64_t seed, LayerStack *g, int *cache, Pos pos)
+static int canCoordinateBeSpawn(const int64_t seed, LayerStack *g, [[maybe_unused]] int *cache, Pos pos)
 {
     int biome = getBiomeAtPos(*g, pos);
     return getGrassProbability(seed, biome, pos.x, pos.z) >= 0.5;
@@ -1811,6 +1811,7 @@ BiomeFilter setupBiomeFilter(const int *biomeList, int listLen)
             bf.requireMushroom = 1;
             bf.tempCat |= (1ULL << Oceanic);
             bf.biomesToFind |= (1ULL << id);
+            break;
         case badlands:
         case wooded_badlands_plateau:
         case badlands_plateau:
@@ -2157,6 +2158,7 @@ int64_t checkForBiomes(
                 potential |= (1ULL << deep_frozen_ocean) | (1ULL << deep_cold_ocean) | (1ULL << deep_lukewarm_ocean); break;
             case mushroom_fields:
                 potential |= (1ULL << id) | (1ULL << mushroom_field_shore);
+                break;
             default:
                 potential |= (1ULL << id);
             }

@@ -183,7 +183,7 @@ static const int BIOMES_L_RIVER_MIX_4[] =
 };
 
 
-STRUCT(LayerStack)
+struct LayerStack
 {
     Layer *layers;
     int layerCnt;
