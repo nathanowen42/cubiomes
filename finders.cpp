@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include <atomic>
+#include <deque>
+#include <map>
+#include <random>
+#include <thread>
+#include <utility>
 
 struct quad_threadinfo_t
 {
@@ -2226,14 +2232,103 @@ int64_t checkForBiomes(
     return ret;
 }
 
+/*
+ * Finds the closest land to the specified location
+ * using a BFS.
+ *
+ * TODO optimize this algorithm by doing this at the
+ * correct layer instead of a block-by-block search
+ * I am not sure yet what layer this needs to be done at.
+ *
+ * Note this is extremely expensive and should be done
+ * later during seed finding 
+ */
+Pos findClosestLand(Pos pos, LayerStack& layer)
+{
+    std::map<std::pair<int,int>, bool> visited{};
+    std::deque<Pos> queue;
 
+    queue.emplace_back(pos);
 
+    while (true)
+    {
+        auto p = queue.front();
+        queue.pop_front();
 
+        auto& vis = visited[{p.x,p.z}];
 
+        if(vis)
+        {
+            continue;
+        }
 
+        vis = true;
 
+        if(!isOceanic(getBiomeAtPos(layer, p)))
+        {
+            return p;
+        }
 
+        queue.emplace_back(Pos{p.x + 1, p.z});
+        queue.emplace_back(Pos{p.x - 1, p.z});
+        queue.emplace_back(Pos{p.x, p.z + 1});
+        queue.emplace_back(Pos{p.x, p.z - 1});
+    }
+}
 
+/*
+ * When given a position on land, this function will use a BFS
+ * to determine if the land is an island (e.g. a landmass surrounded by ocean)
+ * with a surface area within the provided range of blocks.
+ *
+ * TODO optimize this algorithm by doing this at the
+ * correct layer instead of a block-by-block search
+ * I am not sure yet what layer this needs to be done at.
+ *
+ * Note this is extremely expensive and should be done
+ * later during seed finding 
+ */
 
+bool isIsland(Pos pos, LayerStack& layer, uint64_t minBlocks, uint64_t maxBlocks)
+{
+    if(isOceanic(getBiomeAtPos(layer, pos)))
+    {
+        return false;
+    }
 
+    std::map<std::pair<int,int>, bool> visited{};
+    std::deque<Pos> queue;
+    uint64_t blocksChecked = 0;
+
+    queue.emplace_back(pos);
+
+    while (!queue.empty() && blocksChecked <= maxBlocks)
+    {
+        auto p = queue.front();
+        queue.pop_front();
+
+        auto& vis = visited[{p.x,p.z}];
+
+        if(vis)
+        {
+            continue;
+        }
+
+        vis = true;
+
+        if(isOceanic(getBiomeAtPos(layer, p)))
+        {
+            continue;
+        }
+
+        blocksChecked++;
+
+        queue.emplace_back(Pos{p.x + 1, p.z});
+        queue.emplace_back(Pos{p.x - 1, p.z});
+        queue.emplace_back(Pos{p.x, p.z + 1});
+        queue.emplace_back(Pos{p.x, p.z - 1});
+    }
+
+    return queue.empty() && blocksChecked > minBlocks;
+}
 

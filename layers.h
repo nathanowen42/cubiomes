@@ -176,11 +176,6 @@ struct Layer
     Layer *p, *p2;      // parent layers
 };
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 //==============================================================================
 // Essentials
 //==============================================================================
@@ -582,10 +577,5 @@ void mapOceanTemp(Layer *l, int * __restrict out, int areaX, int areaZ, int area
 void mapOceanMix(Layer *l, int * __restrict out, int areaX, int areaZ, int areaWidth, int areaHeight);
 
 void mapVoronoiZoom(Layer *l, int * __restrict out, int x, int z, int w, int h);
-
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* LAYER_H_ */

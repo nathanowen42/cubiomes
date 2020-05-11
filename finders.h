@@ -132,11 +132,6 @@ struct BiomeFilter
     int doScale4Check;
 };
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 /******************************** SEED FINDING *********************************
  *
  *  If we want to find rare seeds that meet multiple custom criteria then we
@@ -569,8 +564,32 @@ int64_t checkForBiomes(
         const BiomeFilter   filter,
         const int           minscale);
 
-#ifdef __cplusplus
-}
-#endif
+/*
+ * Finds the closest land to the specified location
+ * using a BFS.
+ *
+ * TODO optimize this algorithm by doing this at the
+ * correct layer instead of a block-by-block search
+ * I am not sure yet what layer this needs to be done at.
+ *
+ * Note this is extremely expensive and should be done
+ * later during seed finding 
+ */
+Pos findClosestLand(Pos pos, LayerStack& layer);
+
+/*
+ * When given a position on land, this function will use a BFS
+ * to determine if the land is an island (e.g. a landmass surrounded by ocean)
+ * with a surface area within the provided range of blocks.
+ *
+ * TODO optimize this algorithm by doing this at the
+ * correct layer instead of a block-by-block search
+ * I am not sure yet what layer this needs to be done at.
+ *
+ * Note this is extremely expensive and should be done
+ * later during seed finding 
+ */
+
+bool isIsland(Pos pos, LayerStack& layer, uint64_t minBlocks, uint64_t maxBlocks);
 
 #endif /* FINDERS_H_ */

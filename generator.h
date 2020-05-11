@@ -189,11 +189,6 @@ struct LayerStack
     int layerCnt;
 };
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-
 /* Initialise an instance of a generator. */
 LayerStack setupGenerator(const int mcversion);
 
@@ -227,11 +222,6 @@ void applySeed(LayerStack *g, int64_t seed);
  * buffer size.
  */
 void genArea(Layer *layer, int *out, int areaX, int areaZ, int areaWidth, int areaHeight);
-
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* GENERATOR_H_ */
 
