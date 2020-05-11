@@ -5,12 +5,14 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include <algorithm>
 #include <atomic>
 #include <deque>
 #include <map>
 #include <random>
 #include <thread>
 #include <utility>
+#include <vector>
 
 struct quad_threadinfo_t
 {
@@ -2330,5 +2332,30 @@ bool isIsland(Pos pos, LayerStack& layer, uint64_t minBlocks, uint64_t maxBlocks
     }
 
     return queue.empty() && blocksChecked > minBlocks;
+}
+
+std::vector<Pos> getVillagesInRange(Pos pos, LayerStack& layer, int64_t seed, uint64_t range)
+{
+    std::vector<Pos> foundList;
+    auto regionSizeBlocks = VILLAGE_CONFIG.regionSize * 16;
+    int64_t regionRange = std::max(range / regionSizeBlocks, uint64_t(1));
+    auto regionPosX = pos.x / regionSizeBlocks;
+    auto regionPosZ = pos.z / regionSizeBlocks;
+
+    for(int regionX = regionPosX - regionRange; regionX <= regionRange; regionX++)
+    {
+        for(int regionZ = regionPosZ - regionRange; regionZ <= regionRange; regionZ++)
+        {
+            Pos structPos = getStructurePos(VILLAGE_CONFIG, seed, regionX, regionZ);
+
+            if(isViableVillagePos(layer, nullptr, structPos.x, structPos.z))
+            {
+                foundList.emplace_back(structPos);
+            }
+        }
+    }
+
+    //free(cache);
+    return foundList;
 }
 

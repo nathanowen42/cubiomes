@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <vector>
+
 #ifdef _WIN32
 #include <Windows.h>
 
@@ -591,5 +593,8 @@ Pos findClosestLand(Pos pos, LayerStack& layer);
  */
 
 bool isIsland(Pos pos, LayerStack& layer, uint64_t minBlocks, uint64_t maxBlocks);
+
+
+std::vector<Pos> getVillagesInRange(Pos pos, LayerStack& layer, int64_t seed, uint64_t range);
 
 #endif /* FINDERS_H_ */
