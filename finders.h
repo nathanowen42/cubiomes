@@ -594,6 +594,9 @@ Pos findClosestLand(Pos pos, LayerStack& layer);
 
 bool isIsland(Pos pos, LayerStack& layer, uint64_t minBlocks, uint64_t maxBlocks);
 
+/*
+ * Outputs list of villages within a given range of a specified position
+ */
 
 std::vector<Pos> getVillagesInRange(Pos pos, LayerStack& layer, int64_t seed, uint64_t range);
 

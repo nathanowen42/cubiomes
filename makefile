@@ -1,4 +1,4 @@
-CC      = gcc
+CC      = g++
 AR      = ar
 ARFLAGS = cr
 override LDFLAGS = -lm
@@ -28,7 +28,13 @@ libcubiomes: layers.o generator.o finders.o util.o
 find_compactbiomes: find_compactbiomes.o layers.o generator.o finders.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-find_compactbiomes.o: find_compactbiomes.c
+find_compactbiomes.o: find_compactbiomes.cpp
+	$(CC) -c $(CXXFLAGS) $<
+
+find_awesome_islands: find_awesome_islands.o layers.o generator.o finders.o
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+find_awesome_islands.o: find_awesome_islands.cpp
 	$(CC) -c $(CXXFLAGS) $<
 
 find_quadhuts: find_quadhuts.o layers.o generator.o finders.o 
@@ -36,7 +42,6 @@ find_quadhuts: find_quadhuts.o layers.o generator.o finders.o
 
 find_quadhuts.o: find_quadhuts.cpp
 	$(CC) -c $(CXXFLAGS) $<
-
 
 xmapview.o: xmapview.cpp xmapview.h
 	$(CC) -c $(CXXFLAGS) $<
